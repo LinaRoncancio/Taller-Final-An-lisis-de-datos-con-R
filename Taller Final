@@ -143,3 +143,80 @@ data_completo2 <- data_completo %>%
 
 ### ¿La comida es más cara en el lado Este o el lado Oeste de Manhattan?
 ### RTA: Teniendo en cuenta el calculo del precio promedio, se evidencia que la comida es mas cara al lado Este de Manhattan.
+setwd('C:/Users/Lina/Desktop/')
+
+price <- read.csv("C:/Users/Lina/Desktop/price_ratings.csv")
+glimpse(price)
+
+location <- read.csv("C:/Users/Lina/Desktop/restaurant_locations.csv")
+
+price_wider <- price %>%
+  pivot_wider(names_from = variable, values_from = valor)
+
+data_id_restaurat <- price_wider%>%
+  inner_join(location, by = c("Id" = "Id_restaurant"))
+
+data_completo <- data_id_restaurat%>%
+  select(c(Restaurant, Price, Service))%>%
+  arrange(Price)
+
+data_completo %>% head(1)
+
+data_completo %>%
+  tail(1)
+data_completo2 <- data_completo %>%
+  group_by(East)%>%
+  summarise(precio_promedio = mean(Price))
+
+##Punto 3
+##3.1. Regresión lineal
+Usando la función lm() de R, construya una regresión lineal de la variable Price contra Food, Decor, Service y East y guarde el resultado en un objeto llamado regresion.
+
+Posteriormente, ejecute el comando summary(regresion).
+
+¿Todas las variables son estadísticamente significaticas? 
+  ¿Qué variable parece influir más en el precio de la comida?
+##RTA
+  reg <- lm(Price ~ 
+            Food 
+          + Decor 
+          + Service 
+          + East, data = data_completo)
+
+summary(reg)
+
+##Punto 4
+## 4.1 Cree un gráfico con la estimación de la función de densidad para la variable Service, 
+con el atributo linetype asociado a la variable East. 
+Añada un título de su elección y cambie los nombres de los ejes y la leyenda para que aparezcan en español.
+
+¿Cuál zona de Manhattan tiende a tener mejor calificación de servicio?
+
+
+ggplot(Data_completa, aes(Service, linetype = factor(East)))+
+  geom_density() +
+  labs(
+    title = "Densidad Servicio",
+    x = "Servicio",
+    y = "Densidad",
+    linetype = "Este"
+  )
+
+## 4.1 Cree un gráfico de dispersión entre las variables Price y Decor, donde el color de los puntos esté asociado a la variable East. Modifique la escala de color de tal forma que:
+
+El color de 0 sea azul y de 1 sea verde.
+La etiqueta de 0 sea Oeste y de 1 sea Este.
+Según el gráfico, ¿A qué zona de Manhattan pertenece el restaurante con menor precio?
+##RTA
+  graf_2 <- ggplot(bases_unidas, aes(x=Price, y=Decor, color=factor(East, labels = c("Oeste","Este")))) +
+  geom_point() + 
+  scale_color_manual(values=c('#1874CD','#008B00'))+
+  labs(
+    title="Grafico Dispersión",
+    x = "Precio",
+    y = "Decoración",
+    color = "Zona",
+  )
+
+graf_2
+  
