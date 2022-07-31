@@ -185,15 +185,20 @@ Posteriormente, ejecute el comando summary(regresion).
 
 summary(reg)
 
+#No todas las variables presentan valores de significancia aceptables, 
+#la que menos significancia muestra es la variable servicio y la que más influye
+#es la variable EAST
+
+
 ##Punto 4
-## 4.1 Cree un gráfico con la estimación de la función de densidad para la variable Service, 
-con el atributo linetype asociado a la variable East. 
-Añada un título de su elección y cambie los nombres de los ejes y la leyenda para que aparezcan en español.
+##4.1 Cree un gráfico con la estimación de la función de densidad para la variable Service, 
+##con el atributo linetype asociado a la variable East. 
+##Añada un título de su elección y cambie los nombres de los ejes y la leyenda para que aparezcan en español.
 
 ¿Cuál zona de Manhattan tiende a tener mejor calificación de servicio?
 
 
-ggplot(Data_completa, aes(Service, linetype = factor(East)))+
+ggplot(Data_completo, aes(Service, linetype = factor(East)))+
   geom_density() +
   labs(
     title = "Densidad Servicio",
@@ -208,7 +213,7 @@ El color de 0 sea azul y de 1 sea verde.
 La etiqueta de 0 sea Oeste y de 1 sea Este.
 Según el gráfico, ¿A qué zona de Manhattan pertenece el restaurante con menor precio?
 ##RTA
-  graf_2 <- ggplot(bases_unidas, aes(x=Price, y=Decor, color=factor(East, labels = c("Oeste","Este")))) +
+  graf_2 <- ggplot(data_completo, aes(x=Price, y=Decor, color=factor(East, labels = c("Oeste","Este")))) +
   geom_point() + 
   scale_color_manual(values=c('#1874CD','#008B00'))+
   labs(
@@ -219,4 +224,5 @@ Según el gráfico, ¿A qué zona de Manhattan pertenece el restaurante con meno
   )
 
 graf_2
-  
+# Vemos en el gráfico de dispersión que el menor precio está en el área este y 
+#restaurante con menos decoración en el Oeste
